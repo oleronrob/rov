@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+		<link rel="stylesheet"  href="style.css">
+        <meta charset="utf-8" />
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<!--<script src="/gamepadtest.js"></script>-->
+        <script src="/socket.io/socket.io.js"></script>
+        <title>Socket.io</title>
+<style>
+.buttons, .axes {
+  padding: 1em;
+}
+
+.button {
+  padding: 1em;
+  border-radius: 20px;
+  border: 1px solid black;
+  background-size: 0% 0%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.pressed {
+  border: 1px solid red;
+}
+</style>
+    </head>
+
+ 
+
+    <body>
+<h2 id="start">Press a button on your controller to start</h2>
+        <h1>Communicating with socket.io!</h1>
+
+
+        <p><input type="button" value="Poke the server" id="poke" /></p>
+		<p><input type="button" value="Moteur 1 +" id="motplus" /></p>
+		<div id ="moteurs">
+		<p><input type="button" value="Moteur 1 accelere" id="mot1avance" /></p>
+		<p><input type="button" value="Moteur 2 accelere" id="mot2avance" /></p>
+		<p><input type="button" value="Moteur 3 accelere" id="mot3avance" /></p>
+		
+		<p><input type="button" value="Moteur 1 deccelere" id="mot1deccelere" /></p>
+		<p><input type="button" value="Moteur 2 deccelere" id="mot2deccelere" /></p>
+		<p><input type="button" value="Moteur 3 deccelere" id="mot3deccelere" /></p>
+		
+		
+		
+		<p><input type="button" value="Moteur1 STOP" id="mot1stop" /></p>
+		<p><input type="button" value="Moteur2 STOP" id="mot2stop" /></p>
+		<p><input type="button" value="Moteur3 STOP" id="mot3stop" /></p>
+		<p><input type="button" value="Moteurs tous STOP" id="motsstop" /></p>
+		</div>
+		<div id ="leds">
+		<p><input type="button" value="Leds on/off" id="leds" /></p>
+		</div>
+		<div id="moniteur">
+		moniteur
+		</div>
+       
+<script>
+var speed1 =90;
+var speed2 =90;
+var speed3 =90;
+</script>
+ 
+
+
+<script>
+
+
+</script>
+<!-- 
+<script>
+window.addEventListener("gamepadconnected", function(e) {
+  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    e.gamepad.index, e.gamepad.id,
+    e.gamepad.buttons.length, e.gamepad.axes.length);
+});
+</script>-->
+
+
+        <script>
+			
+            var socket = io.connect('http://localhost:8080');
+
+
+            // The visitor is asked for their username...
+
+            var username = prompt('What\'s your username?');
+	
+	//GAMEPAD
+	
+	var haveEvents = 'GamepadEvent' in window;
+	var controla = {};
+	var rAF = window.mozRequestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.requestAnimationFrame;
+
+	function connecthandler(e) {
+		addgamepad(e.gamepad);
+	}
+	
+	function addgamepad(gamepad) {
+		controla[gamepad.index] = gamepad; var d = document.createElement("div");
+		console.log(gamepad.index);
+		d.setAttribute("id", "controller" + gamepad.index);
+		
+		var t = document.createElement("h1");
+		t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+		d.appendChild(t);
+		var b = document.createElement("div");
+		b.className = "buttons";
+		
+		for (var i=0; i<gamepad.buttons.length; i++) {
+			var e = document.createElement("span");
+			e.className = "button";
+			//e.id = "b" + i;
+			e.innerHTML = i;
+			b.appendChild(e);
+		}
+		
+		d.appendChild(b);
+		var a = document.createElement("div");
+		a.className = "axes";
+		
+		for (var i=0; i<gamepad.axes.length; i++) {
+			var e = document.createElement("progress");
+			var l = document.createElement("span");
+			e.className = "axis";
+			e.id = "a" + i;
+			e.setAttribute("max", "2");
+			e.setAttribute("value", "1");
+			e.innerHTML = i;
+			l.className="nbaxe";
+			l.innerHTML = "axe : " +i;
+			a.appendChild(l);
+			a.appendChild(e);
+		}
+		
+		d.appendChild(a);
+		document.getElementById("start").style.display = "none";
+		document.body.appendChild(d);
+		rAF(updateStatus);
+	}
+
+	function disconnecthandler(e) {
+		removegamepad(e.gamepad);
+	}	
+
+	function removegamepad(gamepad) {
+		var d = document.getElementById("controller" + gamepad.index);
+		document.body.removeChild(d);
+		delete controla[gamepad.index];
+	}
+
+	function updateStatus() {
+		if (!haveEvents) {
+			scangamepads();
+		}
+		
+		for (j in controla) {
+			var controller = controla[j];
+			var d = document.getElementById("controller" + j);
+			var buttons = d.getElementsByClassName("button");
+			
+				for (var i=0; i<controller.buttons.length; i++) {
+				var b = buttons[i];
+				var val = controller.buttons[i];
+				var pressed = val == 1.0;
+				if (typeof(val) == "object") {
+					pressed = val.pressed;
+					val = val.value;
+				}
+				var pct = Math.round(val * 100) + "%"
+				b.style.backgroundSize = pct + " " + pct;
+				if (pressed) {
+					b.className = "button pressed";
+				} else {
+				b.className = "button";
+				}
+				}
+
+				var axes = d.getElementsByClassName("axis");
+				var valaxe = d.getElementsByClassName("nbaxe");
+				
+				for (var i=0; i<controller.axes.length; i++) {
+				var test;
+					var a = axes[i];
+					var m=valaxe[i];
+					a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
+					a.setAttribute("value", -controller.axes[i] + 0.4);
+					m.innerHTML = -(Math.round(controller.axes[i]*100))+50;
+					test = controller.axes[i];
+					if (i===1) {
+						speed1=parseInt(m.innerHTML);
+						console.log(a.innerHTML);
+						console.log("test",test);
+						console.log(speed1);
+						socket.emit('moteur1', speed1);
+					};
+				}
+			}
+		rAF(updateStatus);
+	}
+
+	function scangamepads() {
+		var gamepads = navigator.getGamepads () ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+		for (var i = 0; i < gamepads.length; i++) {
+			if (gamepads[i]) {
+				if (!(gamepads[i].index in controla)) {
+					addgamepad(gamepads[i]);
+				} else {
+				controla[gamepads[i].index] = gamepads[i];
+				}
+			}
+		}
+	}
+
+	window.addEventListener("gamepadconnected", connecthandler);
+	window.addEventListener("gamepaddisconnected", disconnecthandler);
+	if (!haveEvents) {
+		setInterval(scangamepads, 500);
+	}
+	//fin gamepad
+	
+	
+    
+	  
+
+            
+
+            // It's sent with the signal "little_newbie" (to differentiate it from "message")
+
+            socket.emit('little_newbie', username);
+
+
+            // A dialog box is displayed when the server sends us a "message"
+
+            socket.on('message', function(message) {
+
+                alert('The server has a message for you: ' + message);
+
+            })
+
+
+            // When the button is clicked, a "message" is sent to the server
+
+            $('#poke').click(function () {
+
+                socket.emit('message', 'Hi server, how are you?');
+
+            });
+			$('#motplus').click(function() {
+			socket.emit('message', 'mot1plus');
+			});
+			//GESTION DES MOTEURS par bouton
+			//moteur 1
+			$('#mot1avance').click(function() {
+			speed1 +=4;
+			alert(speed1);
+			socket.emit('moteur1', speed1);
+			});
+			$('#mot1deccelere').click(function() {
+			speed1 -=4;
+			alert(speed1);
+			socket.emit('moteur1', speed1);
+			});
+			$('#mot1stop').click(function() {
+			speed1 =90;
+			alert(speed1);
+			socket.emit('moteur1', speed1);
+			});
+			//moteur 2
+			$('#mot2avance').click(function() {
+			speed2 +=4;
+			alert(speed2);
+			socket.emit('moteur2', speed2);
+			});
+			$('#mot2deccelere').click(function() {
+			speed2 -=4;
+			alert(speed2);
+			socket.emit('moteur2', speed2);
+			});
+			$('#mot2stop').click(function() {
+			speed2 =90;
+			alert(speed2);
+			socket.emit('moteur2', speed2);
+			});
+			//moteur 3
+			$('#mot3avance').click(function() {
+			speed3 +=4;
+			alert(speed2);
+			socket.emit('moteur3', speed3);
+			});
+			$('#mot3deccelere').click(function() {
+			speed3 -=4;
+			alert(speed3);
+			socket.emit('moteur3', speed3);
+			});
+			$('#mot3stop').click(function() {
+			speed3 =90;
+			alert(speed3);
+			socket.emit('moteur3', speed3);
+			});
+			//stop tous les moteurs
+			$('#motsstop').click(function() {
+			speed=speed1=speed2=speed3=90;
+			
+			alert("arret des moteurs");
+			socket.emit('moteurstop', speed);
+			});
+			
+        </script>
+
+    </body>
+
+</html>

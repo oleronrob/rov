@@ -1,0 +1,124 @@
+<html>
+<head>
+<!-- <link rel="stylesheet"  href="/stylesheets/style.css" type="text/css"> -->
+    <meta charset="utf-8" />
+
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/socket.io-1.3.5.js"></script>
+    <script src="/javascripts/config.js"></script>
+    
+
+    <title>ROV OLERON</title>
+    
+</head>
+
+
+<body>
+
+<style>
+    body{
+            background-color : black ;
+            color : grey ;
+            display : inline-block ;
+            width : 100%;
+            }
+
+    section {
+            display : inline-block ;
+            background-color : black;
+            color : grey ;
+            border  : 1px solid grey ;
+            width : 70% ;
+            }
+
+    aside {
+            display : inline-block ;
+            background-color : black ;
+            min-width : 250px ;
+            width : 25%;
+
+            height : 100% ;
+            border : 2px solid grey ;
+            vertical-align : top ;
+            }
+
+    #form1 {
+            display : block ;
+            color : blue; 
+            }
+    #magneto {
+            background-color : green ;
+            width = 200 px ;
+            height = 200 px ;
+            align = top ;
+            }
+    #dessin1,#dessin2 {
+            border : 2px solid grey ;
+            }
+
+</style>
+<section>
+    <h1>
+    SECTION
+    </h1>
+
+    <form name ="repvid" id="form1" method="post">
+    Répertoire vidéo : <input type="text" id="repvideo" onchange="changerep()" size="20"><br/>
+    Répertoire photo : <input type="text" id="repphoto" size="20"><br/>    
+    Mot de passe GOPRO : <input type="text" id="mdpgopro" size="20"><br/>
+
+    </form>
+    <canvas id="dessin1" width ="300" height ="300" ></canvas>
+    <canvas id="dessin2" width ="300" height ="300" ></canvas>
+</section>
+
+<aside>
+    <h1>ASIDE</h1>
+    <div id="magneto">
+    <h1>magneto</h1>
+    <textarea id="imageDataDisplay" rows=10 cols=30 ></textarea>
+    </div> 
+
+</aside>
+
+<script>
+    function changerep() {
+    var rpv=document.getElementById("repvideo") ;
+    var rpvval = rpv.value;
+    console.log (rpvval);
+    }
+
+</script>
+
+<script>
+    var moncanvas= document.getElementById('dessin1') ;
+    var ctx = moncanvas.getContext('2d') ;
+    ctx.fillStyle ="red";
+    ctx.fillRect(20,30,100,50);
+    ctx.fillStyle ="blue";
+    ctx.fillRect(50,30,100,50);
+    ctx.fillStyle ="green";
+    ctx.fillRect(80,30,100,50);
+</script>
+
+<script>
+    var moncanvas2= document.getElementById('dessin2') ;
+    var ctx2 = moncanvas2.getContext('2d') ;
+    ctx2.fillStyle ="red";
+    ctx2.beginPath();
+    ctx2.arc(50,50,80,0,Math.PI*2,true);
+    ctx2.fill();
+    ctx2.stroke();
+    ctx2.fillStyle ="blue";
+    ctx2.fillRect(50,30,100,50);
+    ctx2.fillStyle ="green";
+    ctx2.fillRect(80,30,100,50);
+    var imageDataDisplay = document.getElementById('imageDataDisplay');
+    imageDataDisplay.value = moncanvas2.toDataURL() ;
+    window.open(imageDataDisplay.value,"canvasImage","left=0,top=0,width=" + moncanvas2.width + ", height =" + moncanvas2.height +", toolbar=0, resizable=0") ;
+
+
+</script>
+
+</body>
+</html>

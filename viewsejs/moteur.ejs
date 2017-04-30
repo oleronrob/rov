@@ -1,0 +1,135 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="robot site">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Guillaume BONNIFET">
+    <link rel="stylesheet" href="/stylesheets/style2.css">
+    <link rel="stylesheet" href="/stylesheets/w3.css">
+    <script src="/javascripts/jquery-3.1.0.min.js"></script>
+    
+    <title>CONFIGURATION DES PUISSANCES MOTEURS ET LEDS</title>
+</head>
+
+<body>
+    
+<style> 
+    body    {
+        padding: 50px;
+        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        background-color: dimgrey;
+        display: inline-block;
+        }
+    
+    select  {font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        background-color: dimgrey;
+
+        }
+
+</style>
+    
+<div>
+    <h1 id="titre" CONFIGURATION DES PUISSANCES MOTEURS ET LEDS  </h1>
+</div>   
+
+
+
+
+
+<script>
+
+    // GESTION DE LA PUISSANCE DES MOTEURS        
+    function outputUpdate(vol){
+        document.querySelector('#pmotd').value = vol;
+    }
+
+    function mja(volo){
+        document.querySelector('#pmotg').value = volo;
+    }
+    function mjat(lm){
+        document.querySelector('#pmotv').value = lm;
+    }
+            function changeled1(etat1){
+        document.querySelector('#ledd').value = etat1;
+    }
+            function changeled2(etat2){
+        document.querySelector('#ledg').value = etat2;
+    }
+</script> 
+    
+<div class="pmot">
+    <table>
+	
+    <div class="gestionmoteur">
+	 <tr><th>
+     <label for="mot1">puissance moteur droit : </label>
+	 </th><th><output for="mot1" id="pmotd">40</output>
+     </th>
+	 <th><input type="range" id="mot1" class="pmoteur"  name="pmotdroit" value="40" min="20" max="100" step="2" oninput="outputUpdate(this.value)">
+     </th></tr>
+    
+    <tr><th>
+     <label for="mot2">puissance moteur gauche : </label>
+	 </th><th><output for="mot2" id="pmotg">40</output>
+     </th>
+	 <th>
+	 <input type="range" id="mot2" class="pmoteur"  name="pmotgauche" value="40" min="20" max="100" step="2" oninput="mja(this.value)">
+     </th></tr>
+    
+    
+    <tr><th>
+     <label for="mot3">puissance moteur vertical : </label>
+	 </th><th><output for="mot3" id="pmotv">40</output>
+     </th>
+	 <th>
+	 <input type="range" id="mot3" class="pmoteur"  name="pmotvert" value="40" min="20" max="100" step="2" oninput="mjat(this.value)">
+     </th></tr>
+	 
+	 
+	 <tr><th>
+	 <label for="led1">puissance led droite : </label>
+	 </th><th><output for="led1" id="ledd">40</output>
+     </th>
+	 <th>
+	 <input type="range" id="led1" class="pmoteur"  name="leddroit" value="40" min="0" max="100" step="2" oninput="changeled1(this.value)">
+     </th></tr>
+	 
+	 <tr><th>
+	 <label for="led2">puissance led gauche : </label>
+	 </th><th><output for="led2" id="ledg">40</output>
+     </th>
+	 <th>
+	 <input type="range" id="led2" class="pmoteur"  name="ledgauche" value="40" min="0" max="100" step="2" oninput="changeled2(this.value)">
+     </th></tr>   
+    </div>
+    
+</div>   
+      
+    
+ </table>
+    
+
+<div class="boutons">
+    <button type="button" disabled>GOPRO CONNECTED</button> 
+    <button type="button" disabled>GOPRO ON</button> 
+    <button type="button" disabled>GOPRO START</button> 
+    <button type="button" disabled>IMU CONNECTED</button>
+    <button type="button" disabled>MAGNETO CONNECTED</button> 
+    
+</div>
+
+<div class="batteries">
+<progress min="0" max="100" value="70"></progress> 
+    </div>
+    <div class="test">
+<progress id="toto" min="0" max="100" value="10"></progress>  
+    </div>
+<div class="w3-progress-container w3-round-xlarge">
+  <div class="w3-progressbar w3-round-xlarge" style="width:25%"></div>
+</div>
+
+<div>
+<meter min="0" low="10" optimum="90" high="90" max="100"value="95"></meter>    
+<meter min="0" low="10" optimum="90" high="90" max="100"value="70"></meter>    
+</div>
+    
+</body>

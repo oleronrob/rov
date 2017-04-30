@@ -1,0 +1,137 @@
+<head>
+    <meta charset="utf-8" />
+    <title>GOPRO CONFIGURATION</title>
+</head>
+
+
+<body>
+<style> 
+body    {
+        padding: 50px;
+        font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        background-color: dimgrey;
+        display: inline-block;
+        }
+select {font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+        background-color: dimgrey;
+
+}
+
+</style>
+<div>
+<h1 id="titre" GO PRO CONFIGURATION  </h1>
+    
+</div>
+
+<div>
+            <p id="goproconnect">GOPRO pas connectée</p>
+			
+            <p id="pgopro">Power : <select  onchange="myFunction()" name="power" id="power">
+					<option value="on">ON</option>
+					<option value="off">OFF</option>
+					</select></p>
+					
+            <p id="gopromode">Mode : <select  onchange="myFunction()" name="mode" id="mode">
+					<option value="VIDEO">VIDEO</option>
+					<option value="PHOTO">PHOTO</option>
+					<option value="BURST">BURST</option>
+					<option value="TIMER">PHOTO</option>
+					</select></p>
+					
+            <p id="goproresvideo">GOPRO Résolution vidéo : 960-60<select  onchange="myFunction()" name="resvideo" id="resvideo">
+					<option value="4K179-12">4K179-12</option>
+					<option value="4K-15">4K-15</option>
+					<option value="27K179-24">27K179-24</option>
+					<option value="27K-30">27K-30</option>
+					<option value="1440-24">1440-24</option>
+					<option value="1440-30">1440-30</option>
+					<option value="1440-48">1440-48</option>
+					<option value="1080S-24">1080S-24</option>
+					<option value="1080S-30">1080S-30</option>
+					<option value="1080S-48">1080S-48</option>
+					<option value="1080S-60">1080S-60</option>
+					<option value="1080-24">1080-24</option>
+					<option value="1080-30">1080-30</option>
+					<option value="1080-48">1080-48</option>
+					<option value="1080-60">1080-60</option>
+					<option value="960-60">960-60</option>
+					<option value="960-100">960-100</option>
+					<option value="720S-60">720S-60</option>
+					<option value="720S-100">720S-100</option>
+					<option value="720-60">720-60</option>
+					<option value="720-120">720-120</option>
+					</select></p>
+					
+            <p id="goprovision">Champ de vision : <select  onchange="myFunction()" name="vision" id="vision">
+					<option value="wide">wide</option>
+					<option value="medium">medium</option>
+					<option value="narrow">narrow</option>
+   					</select></p>
+					
+            <p id="goproresphoto">Résolution photo : <select  onchange="myFunction()" name="resphoto" id="resphoto">
+					<option value="12mpW">12mpW</option>
+					<option value="7mpW">7mpW</option>
+					<option value="7mpM">7mpM</option>
+					<option value="5mpM">5mpM</option>
+					</select></p>
+					
+            <p id="goprotimer">Timer: 0.5</p>
+			
+            <p id="goprovolume">Volume : <select  onchange="myFunction()" name="volume" id="volume">
+					<option value="100">100</option>
+					<option value="70">70</option>
+					<option value="0">0</option>
+   					</select></p>
+					
+            <p id="goproled">Led : <select  onchange="myFunction()" name="led" id="led">
+					<option value="0">0</option>
+					<option value="2">2</option>
+					<option value="4">4</option>
+   					</select></p>
+					
+            <p id="goproorientation">Orientation : UP</p>
+			
+            <p id="goproprotune">Protune : <select  onchange="myFunction()" name="protune" id="protune">
+					<option value="on">ON</option>
+					<option value="off">OFF</option>
+					</select></p>
+					
+            <p id="goprovideomode">Mode video : PAL</p>
+			
+            <p id="goprorafale">Rafale : <select  onchange="myFunction()" name="rafale" id="rafale">
+					<option value="1ps">1ps</option>
+					<option value="3ps">3ps</option>
+					<option value="5ps">5ps</option>
+					<option value="10ps">10ps</option>
+   					</select></p>
+					
+            <p id="stvideo">Enregistrement : NON</p>
+			
+            <p id="repvideo">Repertoire video :</p>
+			
+            <p id="repphoto">Répertoire photo : </p>
+			
+            <p id="nbvideo">Nombre de videos enregistrées: 0</p>
+			
+            <p id="nbphoto">Nombre de photos enregistrées : 0</p>
+			
+
+		<p id="demo"></p>	
+			
+</div>
+<script>
+function myFunction() {
+    var x = document.getElementById("vision").value;
+    document.getElementById("demo").innerHTML = "vision: " + x;
+	var x = document.getElementById("power").value;
+    document.getElementById("demo").innerHTML = "power: " + x;
+	var x = document.getElementById("mode").value;
+    document.getElementById("demo").innerHTML = "mode: " + x;
+}
+</script>
+<SCRIPT LANGUAGE="JavaScript">
+//document.location.href="10.5.5.9:8080/live/amba.m3u8"
+</SCRIPT>
+
+
+</body>
